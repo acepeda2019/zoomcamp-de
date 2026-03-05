@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 script_dir = Path(__file__).parent
-output_dir = script_dir/"output"
+output_dir = script_dir.parent / 'data' / 'output'
 output_dir.mkdir(exist_ok=True) # create the directory if it doesn't exist
 
 print("arguments", sys.argv)
