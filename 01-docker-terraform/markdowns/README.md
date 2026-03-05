@@ -58,8 +58,8 @@ volumes:
 
 **Answer:** 
 
-- hostname: postgres
-- port: 5432
+- postgres:5432
+- db:5432
 
 ---
 
@@ -108,11 +108,11 @@ FROM green_taxi_data
 WHERE 1=1
 	AND trip_distance < 100
 GROUP BY pickup_date
-ORDER BY total_mileage DESC
+ORDER BY longest_trip DESC
 LIMIT 10
 ```
 
-**Answer:** 2025-11-20
+**Answer:** 2025-11-14
 
 ---
 
@@ -186,6 +186,12 @@ Which sequence describes the workflow for:
 3. Removing all resources managed by Terraform
 
 **Answer:** 
+
+```
+terraform init
+terraform apply -auto-approve
+terraform destroy
+```
 
 ---
 
