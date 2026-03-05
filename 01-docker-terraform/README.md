@@ -11,7 +11,10 @@ Run docker with the `python:3.13` image. Use an entrypoint `bash` to interact wi
 
 **Command used:**
 ```bash
-# TODO: add your docker run command
+docker run -it --entrypoint /bin/bash zc-docker:v001
+pip --version
+
+# Result: pip 25.3 from /usr/local/lib/python3.13/site-packages/pip (python 3.13)
 ```
 
 **Answer:** <!-- e.g. 25.3 -->
