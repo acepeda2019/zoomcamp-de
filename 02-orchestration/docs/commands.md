@@ -19,3 +19,8 @@ gh release download green --repo DataTalksClub/nyc-tlc-data
 gh api gitignore/templates/Python --jq '.source' > .gitignore
 ```
 
+## Base64 Encoding
+GCP Creds need to first be base65 encoded then assigned to a variable in a .env file in order for Kestra to use them to create resources in GCP
+```bash
+base64 -i keys/my-creds.json | tr -d '\n'
+```

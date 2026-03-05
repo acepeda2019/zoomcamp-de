@@ -1,3 +1,6 @@
+# Project specific files
+keys/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -136,6 +139,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env_encoded
 .envrc
 .venv
 env/
