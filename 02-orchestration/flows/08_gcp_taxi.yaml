@@ -10,24 +10,12 @@ inputs:
     values: [yellow, green]
     defaults: green
 
-  - id: year
-    type: SELECT
-    displayName: Select year
-    values: ["2019", "2020"]
-    defaults: "2019"
-    allowCustomValue: true # allows you to type 2021 from the UI for the homework 🤗
-
-  - id: month
-    type: SELECT
-    displayName: Select month
-    values: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
-    defaults: "01"
-
 variables:
-  file: "{{inputs.taxi}}_tripdata_{{inputs.year}}-{{inputs.month}}.csv"
+  file: "{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy-MM')}}.csv"
   gcs_file: "gs://{{kv('GCP_BUCKET_NAME')}}/{{vars.file}}"
-  table: "{{kv('GCP_DATASET')}}.{{inputs.taxi}}_tripdata_{{inputs.year}}_{{inputs.month}}"
-  data: "{{outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ inputs.year ~ '-' ~ inputs.month ~ '.csv']}}"
+  table: "{{kv('GCP_DATASET')}}.{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy-MM')}}"
+  data: "{{outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ (trigger.date | date('yyyy-MM')) ~ '.csv']}}"
+
 
 tasks:
   - id: set_label
@@ -44,7 +32,7 @@ tasks:
       type: io.kestra.plugin.core.runner.Process
     commands:
       - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{inputs.taxi}}/{{render(vars.file)}}.gz | gunzip > {{render(vars.file)}}
-
+      
   - id: upload_to_gcs
     type: io.kestra.plugin.gcp.gcs.Upload
     from: "{{render(vars.data)}}"
@@ -238,6 +226,21 @@ tasks:
     type: io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles
     description: If you'd like to explore Kestra outputs, disable it.
     disabled: false
+
+triggers:
+  - id: green_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 1 * *"
+    # timezone: America/New_York
+    inputs:
+      taxi: green
+
+  - id: yellow_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "30 9 1 * *"
+    # timezone: America/New_York
+    inputs:
+      taxi: yellow
 
 pluginDefaults:
   - type: io.kestra.plugin.gcp
