@@ -16,7 +16,12 @@ Within the execution for `Yellow` Taxi data for the year `2020` and month `12`: 
 
 This can be viewed in the GCS Bucket
 
-**Answer:** 134.5 MB
+**Answer:** 
+- 134.5 MB (GCP) OR 
+- 128.3 MiB (Linux)
+
+_MB is base-10 and MiB is base-2 but they resolves to the same number of bytes._
+
 
 ---
 
@@ -24,15 +29,21 @@ This can be viewed in the GCS Bucket
 
 What is the rendered value of the variable `file` when `taxi=green`, `year=2020`, `month=04`?
 
-**Answer:** [green_tripdata_2020-04.csv.](https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2020-04.csv.gz)
+![](/02-orchestration/images/kestra-green-apr-2020.png)
+**Answer:** green_tripdata_2020-04.csv.
 
 ---
 
 ## Question 3. Yellow Taxi rows for 2020
 
 How many rows are there for the `Yellow` Taxi data for all CSV files in the year 2020?
+```sql
+SELECT COUNT(*) as row_ct
+FROM `zoomcamp.green_tripdata` 
+WHERE filename LIKE '%2020%'
+```
 
-**Answer:** 
+**Answer:** 24,648,499
 
 ---
 
@@ -40,7 +51,13 @@ How many rows are there for the `Yellow` Taxi data for all CSV files in the year
 
 How many rows are there for the `Green` Taxi data for all CSV files in the year 2020?
 
-**Answer:** 1,734,036
+```sql
+SELECT COUNT(*) as row_ct
+FROM `zoomcamp.green_tripdata` 
+WHERE filename LIKE '%2020%'
+```
+
+**Answer:** 1,734,051
 
 ---
 
@@ -48,7 +65,9 @@ How many rows are there for the `Green` Taxi data for all CSV files in the year 
 
 How many rows are there for the `Yellow` Taxi data for the March 2021 CSV file?
 
-**Answer:** 
+![](/02-orchestration/images/yellow-march-2021-rows.png)
+
+**Answer:** 1,925,152
 
 ---
 
@@ -58,7 +77,7 @@ How would you configure the timezone to New York in a Schedule trigger?
 
 **Answer:** Add `timezone: America/New_York` to the triggers config.
 
-```
+```yaml
   triggers:
     - id: green_schedule
       type: io.kestra.plugin.core.trigger.Schedule

@@ -32,7 +32,8 @@ tasks:
       type: io.kestra.plugin.core.runner.Process
     commands:
       - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{inputs.taxi}}/{{render(vars.file)}}.gz | gunzip > {{render(vars.file)}}
-      
+      - ls -lh {{render(vars.file)}}
+
   - id: upload_to_gcs
     type: io.kestra.plugin.gcp.gcs.Upload
     from: "{{render(vars.data)}}"
@@ -231,14 +232,12 @@ triggers:
   - id: green_schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 9 1 * *"
-    # timezone: America/New_York
     inputs:
       taxi: green
 
   - id: yellow_schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "30 9 1 * *"
-    # timezone: America/New_York
     inputs:
       taxi: yellow
 
