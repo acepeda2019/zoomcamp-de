@@ -16,7 +16,7 @@ dbt build --target prod
 
 If you run `dbt run --select int_trips_unioned`, what models will be built?
 
-**Answer:** <!-- TODO -->
+**Answer:** Only int_trips_unioned
 
 ---
 
@@ -24,7 +24,7 @@ If you run `dbt run --select int_trips_unioned`, what models will be built?
 
 A new value `6` appears in source data for a column with `accepted_values: [1, 2, 3, 4, 5]`. What happens when you run `dbt test --select fct_trips`?
 
-**Answer:** <!-- TODO -->
+**Answer:** dbt will fail the test, returning a non-zero exit code
 
 ---
 
@@ -35,10 +35,10 @@ What is the count of records in the `fct_monthly_zone_revenue` model?
 **SQL used:**
 
 ```sql
--- TODO
+BQ SCHEMA DETAILS
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** 12,184
 
 ---
 
@@ -49,10 +49,17 @@ Which pickup zone had the highest total revenue for Green taxi trips in 2020?
 **SQL used:**
 
 ```sql
--- TODO
+SELECT pickup_zone, SUM(revenue_monthly_total_amount) as total_revenue
+FROM `dtc-de-course-488600.ny_taxi_ae.fct_monthly_zone_revenue` 
+WHERE 1=1
+  AND service_type = 'Green'
+  AND EXTRACT(YEAR FROM revenue_month) = 2020
+GROUP BY pickup_zone
+ORDER BY total_revenue DESC
+LIMIT 10
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** East Harlem North | $1,817,163.89
 
 ---
 
@@ -63,10 +70,14 @@ What is the total number of trips for Green taxis in October 2019?
 **SQL used:**
 
 ```sql
--- TODO
+SELECT SUM(total_monthly_trips) as total_trips
+FROM `dtc-de-course-488600.ny_taxi_ae.fct_monthly_zone_revenue` 
+WHERE 1=1
+  AND service_type = 'Green'
+  AND revenue_month = '2019-10-01'
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** 384,624
 
 ---
 
@@ -77,13 +88,16 @@ Create `stg_fhv_tripdata` filtering out null `dispatching_base_num`. What is the
 **SQL used:**
 
 ```sql
--- TODO
+SELECT EXTRACT(YEAR FROM pickup_datetime) as year, COUNT(1) as ct
+FROM `dtc-de-course-488600.ny_taxi_ae.stg_fhv_tripdata` 
+GROUP BY 1
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** 43,244,693
 
 ---
 
 ## Submitting
 
 - [Homework submission form](https://courses.datatalks.club/de-zoomcamp-2026/homework/hw4)
+
