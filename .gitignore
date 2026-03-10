@@ -1,8 +1,9 @@
 # Project specific files
 keys/
-**/.dbt/profiles.yml
+**/.dbt/
 *.duckdb
 logs/
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
