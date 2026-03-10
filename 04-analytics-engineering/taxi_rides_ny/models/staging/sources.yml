@@ -1,0 +1,10 @@
+sources:
+  - name: raw
+    schema: "{{ 'prod' if target.type == 'duckdb' else 'ny_taxi_ae' }}"
+    tables:
+      - name: yellow_tripdata
+        description: Yellow taxi trip data
+      - name: green_tripdata
+        description: Green taxi trip data
+      - name: fhv_tripdata
+        description: FHV trip data
