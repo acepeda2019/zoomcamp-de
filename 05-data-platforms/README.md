@@ -17,7 +17,7 @@ bruin init zoomcamp my-pipeline
 
 What are the required files/directories in a Bruin project?
 
-**Answer:** <!-- TODO -->
+**Answer:** `.bruin.yml` and `pipeline/` with `pipeline.yml` and `assets/`
 
 ---
 
@@ -25,7 +25,7 @@ What are the required files/directories in a Bruin project?
 
 Which incremental strategy is best for processing a specific time interval by deleting and inserting data for that period?
 
-**Answer:** <!-- TODO -->
+**Answer:** time_interval
 
 ---
 
@@ -36,10 +36,10 @@ How do you override the `taxi_types` array variable to only process yellow taxis
 **Command:**
 
 ```bash
-# TODO
+bruin run --var 'taxi_types=["yellow"]'
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** 
 
 ---
 
@@ -50,10 +50,10 @@ You modified `ingestion/trips.py` and want to run it plus all downstream assets.
 **Command:**
 
 ```bash
-# TODO
+bruin run ingestion/trips.py --downstream
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** 
 
 ---
 
@@ -61,7 +61,14 @@ You modified `ingestion/trips.py` and want to run it plus all downstream assets.
 
 Which quality check ensures `pickup_datetime` never has NULL values?
 
-**Answer:** <!-- TODO -->
+**Answer:** 
+
+```yaml
+name: pickup_datetime
+type: datetime
+checks:
+    - name: not_null
+```
 
 ---
 
@@ -72,10 +79,10 @@ Which Bruin command visualizes the dependency graph between assets?
 **Command:**
 
 ```bash
-# TODO
+ bruin  lineage
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** 
 
 ---
 
@@ -86,13 +93,18 @@ What flag ensures tables are created from scratch on a first-time run?
 **Command:**
 
 ```bash
-# TODO
+--full-refresh
 ```
 
-**Answer:** <!-- TODO -->
+**Answer:** 
 
 ---
 
 ## Submitting
 
 - [Homework submission form](https://courses.datatalks.club/de-zoomcamp-2026/homework/hw5)
+
+```
+
+```
+
