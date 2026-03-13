@@ -37,5 +37,5 @@ variable "project" {
 variable "credentials_file_path" {
   description = "The path to the credentials file"
   type        = string
-  default     = "../keys/my-creds.json"
+  default     = "~/.config/gcloud/service_accounts/zoomcamp-sa.json"
 }

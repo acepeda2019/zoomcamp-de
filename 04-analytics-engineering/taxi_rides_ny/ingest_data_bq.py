@@ -1,17 +1,16 @@
+import os
 import requests
 from pathlib import Path
 from google.cloud import bigquery
-from google.oauth2 import service_account
 
 BASE_URL = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download"
-CREDENTIALS_PATH = "../../keys/my-creds.json"
 PROJECT_ID = "dtc-de-course-488600"
 DATASET_ID = "ny_taxi_ae"
 
 
 def get_client():
-    credentials = service_account.Credentials.from_service_account_file(CREDENTIALS_PATH)
-    return bigquery.Client(credentials=credentials, project=PROJECT_ID)
+    # Uses GOOGLE_APPLICATION_CREDENTIALS env var set in ~/.zshrc
+    return bigquery.Client(project=PROJECT_ID)
 
 
 YEARS = {
