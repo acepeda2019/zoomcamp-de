@@ -3,9 +3,21 @@ name = "07-streaming"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
-    "kafka-python>=2.3.0",
+    "kafka-python-ng>=2.2.3",
     "pandas>=3.0.1",
+    "psycopg2-binary>=2.9.11",
     "pyarrow>=23.0.1",
 ]
+
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+    "pgcli>=4.4.0",
+]
+
+# Pylance/Pyright: use this project’s .venv for import resolution.
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
