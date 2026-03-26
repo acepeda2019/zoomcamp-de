@@ -31,6 +31,21 @@ conn.autocommit = True
 cur = conn.cursor()
 
 
+cur.execute("""
+    CREATE TABLE IF NOT EXISTS processed_events (
+        id SERIAL PRIMARY KEY,
+        PULocationID INT,
+        DOLocationID INT,
+        trip_distance FLOAT,
+        total_amount FLOAT,
+        pickup_datetime TIMESTAMP,
+        topic TEXT,
+        partition INT,
+        offset_id BIGINT,
+        UNIQUE (topic, partition, offset_id)
+    )
+""")
+
 print(f"Listening to {topic_name} and writing to PostgreSQL...")
 
 count = 0
