@@ -1,5 +1,25 @@
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import EnvironmentSettings, StreamTableEnvironment
+import psycopg2
+
+def create_table_if_not_exists():
+    conn = psycopg2.connect(
+        host='postgres', port=5432,
+        database='postgres', user='postgres', password='postgres'
+    )
+    conn.autocommit = True
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS processed_events_flink (
+            PULocationID INT,
+            DOLocationID INT,
+            trip_distance FLOAT,
+            total_amount FLOAT,
+            pickup_datetime TIMESTAMP
+        )
+    """)
+    cur.close()
+    conn.close()
 
 def create_events_source_kafka(t_env):
     table_name = "events"
@@ -46,6 +66,7 @@ def create_processed_events_sink_postgres(t_env):
 
 
 def log_processing():
+    create_table_if_not_exists()
     env = StreamExecutionEnvironment.get_execution_environment()
     env.enable_checkpointing(10 * 1000)  # checkpoint every 10 seconds
 
