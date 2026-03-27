@@ -38,7 +38,7 @@ for _, row in df.iterrows():
     ride = green_ride_from_row(row).serialize()
     producer.send(topic_name, value=ride)
     print(f"Sent: {ride}")
-    time.sleep(0.01)
+    # time.sleep(0.01)
 
 producer.flush()
 
