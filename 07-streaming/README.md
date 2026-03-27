@@ -100,7 +100,7 @@ How many trips have `trip_distance` > 5?
 - 8506
 - 9506
 
-**Answer:**
+**Answer: 8506**
 
 ```sql
 SELECT 
@@ -154,7 +154,7 @@ Write results to a PostgreSQL table with columns: `window_start`, `PULocationID`
 
 ```sql
 SELECT PULocationID, num_trips
-FROM <your_table>
+FROM processed_event_green_flink_5min
 ORDER BY num_trips DESC
 LIMIT 3;
 ```
@@ -166,15 +166,34 @@ Which `PULocationID` had the most trips in a single 5-minute window?
 - 75
 - 166
 
-**Answer:**
+**Answer: 74**
+
+```bash
+SELECT pulocationid, num_trips 
+FROM processed_events_green_flink_5min 
+ORDER BY num_trips DESC 
+LIMIT 5;
+
++--------------+-----------+
+| pulocationid | num_trips |
+|--------------+-----------|
+| 74           | 24        |
+| 74           | 22        |
+| 74           | 18        |
+| 74           | 16        |
+| 74           | 16        |
++--------------+-----------+
+```
 
 ---
 
 ## Question 5. Session window - longest streak
 
-Create a Flink job using a session window with a 5-minute gap on `PULocationID`, using `lpep_pickup_datetime` as the event time with a 5-second watermark tolerance.
+Create another Flink job that uses a session window with a 5-minute gap on `PULocationID`, using `lpep_pickup_datetime` as the event time with a 5-second watermark tolerance.
 
-Write results to a PostgreSQL table and find the `PULocationID` with the longest session (most trips in a single session).
+A session window groups events that arrive within 5 minutes of each other. When there's a gap of more than 5 minutes, the window closes.
+
+Write the results to a PostgreSQL table and find the `PULocationID` with the longest session (most trips in a single session).
 
 How many trips were in the longest session?
 
@@ -183,7 +202,24 @@ How many trips were in the longest session?
 - 51
 - 81
 
-**Answer:**
+**Answer: 82**
+
+```bash
+SELECT pulocationid, num_trips 
+FROM processed_events_green_flink_session 
+ORDER BY num_trips DESC
+LIMIT 5
+
++--------------+-----------+
+| pulocationid | num_trips |
+|--------------+-----------|
+| 74           | 82        |
+| 74           | 76        |
+| 74           | 72        |
+| 74           | 72        |
+| 74           | 72        |
++--------------+-----------+
+```
 
 ---
 
@@ -198,7 +234,24 @@ Which hour had the highest total tip amount?
 - 2025-10-22 08:00:00
 - 2025-10-30 16:00:00
 
-**Answer:**
+**Answer:** 2025-10-16 18:00:00
+
+```bash
+SELECT window_start, SUM(tip_amount) as total_tips
+FROM processed_events_green_flink
+GROUP BY window_start
+ORDER BY total_tips DESC
+LIMIT 5;
++---------------------+--------------------+
+| window_start        | total_tips         |
+|---------------------+--------------------|
+| 2025-10-16 18:00:00 | 524.9599999999998  |
+| 2025-10-30 16:00:00 | 507.1              |
+| 2025-10-09 18:00:00 | 472.01000000000016 |
+| 2025-10-10 17:00:00 | 470.0800000000002  |
+| 2025-10-16 17:00:00 | 463.73             |
++---------------------+--------------------+
+```
 
 ---
 
