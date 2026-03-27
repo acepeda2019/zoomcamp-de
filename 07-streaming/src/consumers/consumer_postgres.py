@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from kafka import KafkaConsumer
-from models import Ride, ride_deserializer
+from models import YellowRide, yellow_ride_deserializer
 import psycopg2
 from datetime import datetime
 
@@ -17,7 +17,7 @@ consumer = KafkaConsumer(
     bootstrap_servers=[server],
     auto_offset_reset='earliest',
     group_id='rides-to-postgres',
-    value_deserializer=ride_deserializer
+    value_deserializer=yellow_ride_deserializer
 )
 
 conn = psycopg2.connect(

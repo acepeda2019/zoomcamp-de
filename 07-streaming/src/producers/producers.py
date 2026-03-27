@@ -8,11 +8,17 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pandas as pd
 from kafka import KafkaProducer
-from models import Ride, ride_from_row
+from models import YellowRide, yellow_ride_from_row
 
 # Download NYC yellow taxi trip data (first 1000 rows)
 url = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-11.parquet"
-columns = ['PULocationID', 'DOLocationID', 'trip_distance', 'total_amount', 'tpep_pickup_datetime']
+columns = [
+    'PULocationID',
+    'DOLocationID', 
+    'trip_distance', 
+    'total_amount', 
+    'tpep_pickup_datetime'
+]
 df = pd.read_parquet(url, columns=columns).head(1000)
 
 server = 'localhost:9092'
@@ -25,7 +31,7 @@ t0 = time.time()
 topic_name = 'rides'
 
 for _, row in df.iterrows():
-    ride = ride_from_row(row).serialize()
+    ride = yellow_ride_from_row(row).serialize()
     producer.send(topic_name, value=ride)
     print(f"Sent: {ride}")
     time.sleep(0.01)
