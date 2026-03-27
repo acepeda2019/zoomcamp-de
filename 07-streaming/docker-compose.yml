@@ -29,6 +29,15 @@ services:
       - 28082:28082
       - 29092:29092
 
+  redpanda-console:
+    image: redpandadata/console:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_BROKERS=redpanda:29092
+    depends_on:
+      - redpanda
+
   postgres:
     image: postgres:18
     restart: on-failure
